@@ -7,7 +7,9 @@ const Task=require('../models/task')
 router.get('/tasks',auth,async(req,res)=>{
     const match={}
     const sort={}
-    
+    let limit,skip
+    if(req.query.limit) limit=parseInt(req.query.limit)
+    if(req.query.skip) skip=parseInt(req.query.skip)
     if (req.query.completed) {
         match.completed= req.query.completed==='true'
     }
@@ -23,8 +25,8 @@ router.get('/tasks',auth,async(req,res)=>{
             path:'tasks',
             match,
             options:{
-                limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.skip),
+                limit,
+                skip,
                 sort
             }
         })
